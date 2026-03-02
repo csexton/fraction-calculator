@@ -1,4 +1,4 @@
-const CACHE = 'fraction-calculator-v1';
+const CACHE = 'fraction-calculator-v2';
 
 const ASSETS = [
   './',

@@ -203,6 +203,9 @@
       document.addEventListener("gesturechange", function(event) {
         event.preventDefault();
       }, { passive: false });
+      document.addEventListener("touchmove", function(event) {
+        event.preventDefault();
+      }, { passive: false });
       (function() {
         var updateOrientation = function() {
           document.body.classList.toggle("is-landscape", window.matchMedia("(orientation: landscape)").matches);
