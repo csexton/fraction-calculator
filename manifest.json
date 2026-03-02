@@ -1,0 +1,17 @@
+{
+  "name": "Fraction Calculator",
+  "short_name": "Fractions",
+  "description": "Fractions are hard",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
