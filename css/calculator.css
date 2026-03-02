@@ -79,8 +79,8 @@ body.mobile-layout {
 }
 
 .mobile-topbar {
-  height: 2.25rem;
-  padding: 0 0.75rem env(safe-area-inset-right) 0.75rem;
+  height: calc(2.25rem + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) calc(0.75rem + env(safe-area-inset-right)) 0 0.75rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -100,7 +100,7 @@ body.mobile-layout {
 }
 
 .mobile-content {
-  height: calc(100svh - 2.25rem);
+  height: calc(100svh - 2.25rem - env(safe-area-inset-top));
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
