@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Fraction Calculator</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/calculator.css">
+
+    <script type="importmap">
+    {
+      "imports": {
+        "@hotwired/stimulus": "./js/stimulus.js"
+      }
+    }
+    </script>
+    <script type="module" src="./js/app.js"></script>
+  </head>
+
+  <body class="mobile-layout">
+    <header class="mobile-topbar">
+      <span class="mobile-title">Fraction Calculator</span>
+      <a href="https://github.com/csexton" class="mobile-back" target="_blank" rel="noopener">Fork me on GitHub</a>
+    </header>
+
+    <main class="mobile-content">
+      <div class="mobile-calc" data-controller="fraction-calculator">
+        <div class="mobile-display">
+          <div class="calculator-display-label d-flex justify-content-between">
+            <span data-fraction-calculator-target="inputLabel">Input</span>
+            <span data-fraction-calculator-target="lastOperation" class="d-none"></span>
+            <span class="d-none" data-fraction-calculator-target="displayExact"></span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <div class="calculator-display-screen flex-grow-1" data-fraction-calculator-target="display">--</div>
+            <button class="btn btn-sm" type="button"
+              data-action="click->fraction-calculator#copyResult"
+              data-fraction-calculator-target="copyBtn"
+              title="Copy result"
+              aria-label="Copy result"
+              style="color:rgba(248,250,252,0.4);background:transparent;border:none;padding:0.35rem;flex-shrink:0">
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="mobile-grid">
+          <div class="mobile-left">
+            <div class="mobile-aux">
+              <button class="btn btn-outline-secondary operator-btn operator-btn--aux" type="button"
+                data-action="click->fraction-calculator#clearAll">C</button>
+              <button class="btn btn-outline-secondary operator-btn operator-btn--aux" type="button"
+                data-action="click->fraction-calculator#pressDigit"
+                data-fraction-calculator-cluster-value="whole"
+                data-fraction-calculator-value-value="+/-">+/-</button>
+              <button class="btn btn-outline-secondary operator-btn operator-btn--aux" type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#calc-settings-modal"
+                aria-label="Settings">
+                <i class="bi bi-gear"></i>
+              </button>
+            </div>
+
+            <div class="mobile-whole">
+              <div class="cluster-grid">
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="7">7</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="8">8</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="9">9</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="4">4</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="5">5</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="6">6</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="1">1</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="2">2</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="3">3</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value="0">0</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="whole" data-fraction-calculator-value-value=".">.</button>
+                <button class="btn btn-outline-secondary cluster-btn" type="button" data-action="click->fraction-calculator#backspace" data-fraction-calculator-cluster-value="whole">⌫</button>
+              </div>
+            </div>
+
+            <div class="mobile-ops">
+              <div class="operator-grid">
+                <button class="btn btn-dark operator-btn" type="button" data-action="click->fraction-calculator#setOperator" data-fraction-calculator-operator-value="add">+</button>
+                <button class="btn btn-dark operator-btn" type="button" data-action="click->fraction-calculator#setOperator" data-fraction-calculator-operator-value="sub">-</button>
+                <button class="btn btn-dark operator-btn" type="button" data-action="click->fraction-calculator#setOperator" data-fraction-calculator-operator-value="mul">×</button>
+                <button class="btn btn-dark operator-btn" type="button" data-action="click->fraction-calculator#setOperator" data-fraction-calculator-operator-value="div">÷</button>
+              </div>
+              <button class="btn btn-primary operator-btn operator-equals" type="button" data-action="click->fraction-calculator#calculate">=</button>
+            </div>
+          </div>
+
+          <div class="mobile-right">
+            <div class="mobile-fraction">
+              <div class="cluster-grid cluster-grid--compact">
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="7">7</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="8">8</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="9">9</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="4">4</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="5">5</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="6">6</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="1">1</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="2">2</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="3">3</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="numer" data-fraction-calculator-value-value="0">0</button>
+                <button class="btn btn-outline-secondary cluster-btn" type="button" data-action="click->fraction-calculator#backspace" data-fraction-calculator-cluster-value="numer">⌫</button>
+              </div>
+            </div>
+
+            <div class="fraction-divider"></div>
+
+            <div class="mobile-fraction">
+              <div class="cluster-grid cluster-grid--compact">
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="7">7</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="8">8</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="9">9</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="4">4</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="5">5</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="6">6</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="1">1</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="2">2</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="3">3</button>
+                <button class="btn btn-outline-dark cluster-btn" type="button" data-action="click->fraction-calculator#pressDigit" data-fraction-calculator-cluster-value="denom" data-fraction-calculator-value-value="0">0</button>
+                <button class="btn btn-outline-secondary cluster-btn" type="button" data-action="click->fraction-calculator#backspace" data-fraction-calculator-cluster-value="denom">⌫</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings modal -->
+        <div id="calc-settings-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background:#111827;border-color:rgba(148,163,184,0.2);color:#f8fafc">
+              <div class="modal-header" style="border-bottom-color:rgba(148,163,184,0.2)">
+                <h5 class="modal-title"><i class="bi bi-gear me-2"></i>Settings</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body d-flex flex-column gap-3">
+                <div>
+                  <label class="form-label small text-uppercase" style="opacity:0.65;letter-spacing:0.1em" for="m-round-den">Rounding Increment</label>
+                  <select id="m-round-den" class="form-select" data-fraction-calculator-target="roundDen" style="background:#0f172a;color:#f8fafc;border-color:rgba(148,163,184,0.2)">
+                    <option value="2">1/2</option>
+                    <option value="4">1/4</option>
+                    <option value="8">1/8</option>
+                    <option value="16" selected>1/16</option>
+                    <option value="32">1/32</option>
+                    <option value="64">1/64</option>
+                    <option value="128">1/128</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label small text-uppercase" style="opacity:0.65;letter-spacing:0.1em" for="m-round-mode">Rounding Mode</label>
+                  <select id="m-round-mode" class="form-select" data-fraction-calculator-target="roundMode" style="background:#0f172a;color:#f8fafc;border-color:rgba(148,163,184,0.2)">
+                    <option value="nearest" selected>Nearest</option>
+                    <option value="floor">Round down (floor)</option>
+                    <option value="ceil">Round up (ceil)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label small text-uppercase" style="opacity:0.65;letter-spacing:0.1em" for="m-exact-format">Exact Result</label>
+                  <select id="m-exact-format" class="form-select" data-fraction-calculator-target="exactFormat" style="background:#0f172a;color:#f8fafc;border-color:rgba(148,163,184,0.2)">
+                    <option value="fraction" selected>Fraction</option>
+                    <option value="decimal">Decimal</option>
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer" style="border-top-color:rgba(148,163,184,0.2)">
+                <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">Done</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hidden outputs used by controller -->
+        <div class="d-none">
+          <div class="alert" data-fraction-calculator-target="error"></div>
+          <div class="rounded-output" data-fraction-calculator-target="resultMixed"></div>
+          <div data-fraction-calculator-target="resultExact"></div>
+          <div data-fraction-calculator-target="resultDecimal"></div>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      document.addEventListener("gesturestart", function(event) {
+        event.preventDefault();
+      }, { passive: false });
+      document.addEventListener("gesturechange", function(event) {
+        event.preventDefault();
+      }, { passive: false });
+      (function() {
+        var updateOrientation = function() {
+          document.body.classList.toggle("is-landscape", window.matchMedia("(orientation: landscape)").matches);
+        };
+        window.addEventListener("orientationchange", updateOrientation);
+        window.addEventListener("resize", updateOrientation);
+        updateOrientation();
+      })();
+    </script>
+  </body>
+</html>
